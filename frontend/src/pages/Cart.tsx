@@ -39,6 +39,10 @@ export const Cart = () => {
         status: 'pending',
       };
 
+      if (!supabase) {
+        throw new Error('Order system is not configured');
+      }
+
       const { data, error } = await supabase.from('orders').insert([orderData]).select();
 
       if (error) throw error;

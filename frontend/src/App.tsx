@@ -3,8 +3,6 @@ import { Header } from './components/Header';
 import { Home } from './pages/Home';
 import { Products } from './pages/Products';
 import { Cart } from './pages/Cart';
-import './lib/sentry';
-import './lib/posthog';
 
 function App() {
   return (

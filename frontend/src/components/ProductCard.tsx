@@ -1,4 +1,4 @@
-import { Product, urlFor } from '../lib/sanity';
+import { type Product, urlFor } from '../lib/sanity';
 import { useCartStore } from '../store/cartStore';
 
 interface ProductCardProps {
@@ -9,19 +9,20 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore((state) => state.addItem);
 
   const handleAddToCart = () => {
+    const imageUrl = product.image && urlFor(product.image);
     addItem({
       id: product._id,
       name: product.name,
       price: product.price,
-      image: product.image ? urlFor(product.image).width(200).url() : undefined,
+      image: imageUrl ? imageUrl.width(200).url() : undefined,
     });
   };
 
   return (
     <div style={styles.card}>
-      {product.image && (
+      {product.image && urlFor(product.image) && (
         <img
-          src={urlFor(product.image).width(300).height(300).url()}
+          src={urlFor(product.image)!.width(300).height(300).url()}
           alt={product.name}
           style={styles.image}
         />

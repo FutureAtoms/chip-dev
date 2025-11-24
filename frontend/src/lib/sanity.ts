@@ -3,22 +3,18 @@ import imageUrlBuilder from '@sanity/image-url';
 
 const projectId = import.meta.env.VITE_SANITY_PROJECT_ID;
 const dataset = import.meta.env.VITE_SANITY_DATASET;
-const apiVersion = import.meta.env.VITE_SANITY_API_VERSION;
+const apiVersion = import.meta.env.VITE_SANITY_API_VERSION || '2024-01-01';
 
-if (!projectId || !dataset) {
-  throw new Error('Missing Sanity environment variables');
-}
-
-export const sanityClient = createClient({
+export const sanityClient = (projectId && dataset) ? createClient({
   projectId,
   dataset,
   apiVersion,
   useCdn: true,
-});
+}) : null;
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = sanityClient ? imageUrlBuilder(sanityClient) : null;
 
-export const urlFor = (source: any) => builder.image(source);
+export const urlFor = (source: any) => builder ? builder.image(source) : null;
 
 export interface Product {
   _id: string;

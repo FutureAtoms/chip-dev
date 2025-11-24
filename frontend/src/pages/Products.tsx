@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { sanityClient, Product } from '../lib/sanity';
+import { sanityClient, type Product } from '../lib/sanity';
 import { ProductCard } from '../components/ProductCard';
 import { trackEvent } from '../lib/posthog';
 
@@ -11,6 +11,10 @@ export const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        if (!sanityClient) {
+          setLoading(false);
+          return;
+        }
         const query = '*[_type == "product"] | order(name asc)';
         const data = await sanityClient.fetch<Product[]>(query);
         setProducts(data);
