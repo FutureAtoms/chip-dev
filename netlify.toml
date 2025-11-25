@@ -1,10 +1,14 @@
 [build]
-  base = "frontend"
-  command = "npm install && npm run build"
-  publish = "dist"
+  command = "cd frontend && npm install && npm run build && cd ../sanity-studio && npm install && npm run build && sed -i.bak 's|href=\"/static/|href=\"/studio/static/|g' dist/index.html && sed -i.bak 's|src=\"/static/|src=\"/studio/static/|g' dist/index.html && sed -i.bak 's|\"/vendor/|\"/studio/vendor/|g' dist/index.html && rm dist/index.html.bak && mv dist ../frontend/dist/studio"
+  publish = "frontend/dist"
 
 [build.environment]
   NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/studio/*"
+  to = "/studio/index.html"
+  status = 200
 
 [[redirects]]
   from = "/*"

@@ -63,9 +63,14 @@ export const Home = () => {
       <section style={styles.ctaSection}>
         <h2 style={styles.ctaTitle}>Ready to Start Shopping?</h2>
         <p style={styles.ctaText}>Discover our wide selection of products</p>
-        <Link to="/products" style={styles.ctaButtonLarge}>
-          Get Started
-        </Link>
+        <div style={styles.ctaButtons}>
+          <Link to="/products" style={styles.ctaButtonLarge}>
+            Get Started
+          </Link>
+          <a href="/studio" style={styles.adminButton}>
+            Sanity Studio
+          </a>
+        </div>
       </section>
     </div>
   );
@@ -208,6 +213,13 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#e0e0e0',
     margin: '0 0 2rem 0',
   },
+  ctaButtons: {
+    display: 'flex',
+    gap: '1rem',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
   ctaButtonLarge: {
     backgroundColor: '#4CAF50',
     color: '#fff',
@@ -218,5 +230,17 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 'bold',
     transition: 'transform 0.2s, background-color 0.2s',
     display: 'inline-block',
+  },
+  adminButton: {
+    backgroundColor: '#2a5298',
+    color: '#fff',
+    padding: '1.2rem 3rem',
+    fontSize: '1.2rem',
+    textDecoration: 'none',
+    borderRadius: '8px',
+    fontWeight: 'bold',
+    transition: 'transform 0.2s, background-color 0.2s',
+    display: 'inline-block',
+    border: '2px solid #4a72b8',
   },
 };
