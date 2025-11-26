@@ -119,7 +119,9 @@ export class ThinkingTagExtractor {
         if (closeIndex !== -1) {
           // Found closing tag - extract thinking content up to it
           thinking += this.buffer.substring(0, closeIndex);
-          this.buffer = this.buffer.substring(closeIndex + this.closeTag.length);
+          this.buffer = this.buffer.substring(
+            closeIndex + this.closeTag.length,
+          );
           this.inThinkingBlock = false;
         } else {
           // No closing tag yet - check if we might have a partial closing tag at the end
