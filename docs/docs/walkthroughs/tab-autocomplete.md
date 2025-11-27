@@ -92,7 +92,7 @@ This is just another object like the ones in the `"models"` array of `config.jso
 This object allows you to customize the behavior of tab-autocomplete. The available options are shown below, and you can find their default values [here](https://github.com/continuedev/continue/blob/fbeb2e4fe15d4b434a30a136f74b672485c852d9/core/util/parameters.ts).
 
 - `disable`: Disable autocomplete (can also be done from IDE settings)
-- `template`: An optional template string to be used for autocomplete. It will be rendered with the Mustache templating language, and is passed the 'prefix' and 'suffix' variables. (String)
+- `template`: An optional template string to be used for autocomplete. It will be rendered with the Mustache templating language, and is passed the 'prefix', 'suffix', 'filename', 'reponame', and 'language' variables. (String)
 - `useCopyBuffer`: Determines whether the copy buffer will be considered when constructing the prompt. (Boolean)
 - `useFileSuffix`: Determines whether to use the file suffix in the prompt. (Boolean)
 - `maxPromptTokens`: The maximum number of prompt tokens to use. A smaller number will yield faster completions, but less context. (Number)
