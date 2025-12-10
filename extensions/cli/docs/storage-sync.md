@@ -2,9 +2,25 @@
 
 ## Overview
 
-The `--id <storageId>` flag enables the `cn serve` command to periodically persist session state to an external Continue-managed storage bucket. On startup, the CLI exchanges the provided `storageId` for two pre-signed S3 URLs - one for `session.json` and one for `diff.txt` - and then pushes fresh copies of those files every 30 seconds.
+The `--id` flag for the `cn serve` command serves two purposes:
+
+1. **Local Session Persistence**: The session ID is used to save and restore chat history locally in `~/.continue/sessions/<sessionId>.json`. This allows the serve command to resume from where it left off across restarts.
+
+2. **Remote Storage Sync**: When authenticated with a Continue API key, the CLI also periodically persists session state to an external Continue-managed storage bucket. On startup, the CLI exchanges the provided ID for two pre-signed S3 URLs - one for `session.json` and one for `diff.txt` - and then pushes fresh copies of those files every 30 seconds.
 
 This document captures the responsibilities for both the CLI and backend components so we can iterate on the feature together.
+
+## Session Persistence Behavior
+
+When `cn serve --id <sessionId>` is invoked:
+
+1. The CLI first attempts to load an existing session from `~/.continue/sessions/<sessionId>.json`
+2. If found, that session's chat history is restored and set as the current session
+3. If not found, a new session is created with the specified ID
+4. The session is automatically saved to disk as history is updated
+5. On subsequent restarts with the same `--id`, the chat history is preserved
+
+This local persistence works independently of remote storage sync and does not require authentication.
 
 ## CLI Responsibilities
 

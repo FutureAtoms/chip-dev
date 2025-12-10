@@ -77,6 +77,9 @@ cn ls --json
 - `cn logout`: Sign out of current session
 - `cn remote`: Launch a remote instance
 - `cn serve`: Start HTTP server mode
+  - `--id <sessionId>`: Use a specific session ID to persist chat history across restarts
+  - `--port <port>`: Specify server port (default: 8000)
+  - `--timeout <seconds>`: Set inactivity timeout (default: 300)
 
 ### Session Listing (`cn ls`)
 
