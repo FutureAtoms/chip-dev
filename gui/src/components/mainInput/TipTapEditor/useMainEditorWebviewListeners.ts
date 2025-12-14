@@ -60,7 +60,7 @@ export function useMainEditorWebviewListeners({
   });
 
   useWebviewListener(
-    "focusContinueInput",
+    "focusChipInput",
     async () => {
       dispatch(clearCodeToEdit());
 
@@ -82,7 +82,7 @@ export function useMainEditorWebviewListeners({
   );
 
   useWebviewListener(
-    "focusContinueInputWithoutClear",
+    "focusChipInputWithoutClear",
     async () => {
       setTimeout(() => {
         editor?.commands.focus("end");
@@ -92,7 +92,7 @@ export function useMainEditorWebviewListeners({
   );
 
   useWebviewListener(
-    "focusContinueInputWithNewSession",
+    "focusChipInputWithNewSession",
     async () => {
       await dispatch(
         saveCurrentSession({

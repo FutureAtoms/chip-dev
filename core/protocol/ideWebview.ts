@@ -90,9 +90,9 @@ export type ToWebviewFromIdeProtocol = ToWebviewFromIdeOrCoreProtocol & {
   setInactive: [undefined, void];
   newSessionWithPrompt: [{ prompt: string }, void];
   userInput: [{ input: string }, void];
-  focusContinueInput: [undefined, void];
-  focusContinueInputWithoutClear: [undefined, void];
-  focusContinueInputWithNewSession: [undefined, void];
+  focusChipInput: [undefined, void];
+  focusChipInputWithoutClear: [undefined, void];
+  focusChipInputWithNewSession: [undefined, void];
   highlightedCode: [HighlightedCodePayload, void];
   setCodeToEdit: [SetCodeToEditPayload, void];
   navigateTo: [{ path: string; toggle?: boolean }, void];

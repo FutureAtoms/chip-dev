@@ -1,29 +1,28 @@
 import { IDE } from "..";
 import { joinPathsToUri } from "../util/uri";
 
-const DEFAULT_ASSISTANT_FILE = `# This is an example configuration file
+const DEFAULT_ASSISTANT_FILE = `# ChipOS Configuration File
 # To learn more, see the full config.yaml reference: https://docs.continue.dev/reference
 
-name: Example Config
+name: ChipOS Config
 version: 1.0.0
 schema: v1
 
 # Define which models can be used
 # https://docs.continue.dev/customization/models
 models:
-  - name: my gpt-5
-    provider: openai
-    model: gpt-5
-    apiKey: YOUR_OPENAI_API_KEY_HERE
-  - uses: ollama/qwen2.5-coder-7b
-  - uses: anthropic/claude-4-sonnet
-    with:
-      ANTHROPIC_API_KEY: \${{ secrets.ANTHROPIC_API_KEY }}
+  - name: Gemini 2.0 Flash
+    provider: gemini
+    model: gemini-2.0-flash
+    apiKey: YOUR_GEMINI_API_KEY_HERE
 
-# MCP Servers that Continue can access
-# https://docs.continue.dev/customization/mcp-tools
+# ChipOS MCP Server - provides project/task management and RAG knowledge base
+# Default: Hosted MCP server on Google Cloud Run
+# For local development, change url to: http://localhost:8051/mcp
 mcpServers:
-  - uses: anthropic/memory-mcp
+  - name: ChipOS
+    type: streamable-http
+    url: https://mcp.futureatoms.com/mcp
 `;
 
 export async function createNewAssistantFile(

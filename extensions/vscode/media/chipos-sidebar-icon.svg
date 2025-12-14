@@ -1,0 +1,20 @@
+<svg width="256" height="256" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Pins -->
+  <path d="M7 3V5 M12 3V5 M17 3V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Bottom Pins -->
+  <path d="M7 19V21 M12 19V21 M17 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Left Pins -->
+  <path d="M3 7H5 M3 12H5 M3 17H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Right Pins -->
+  <path d="M19 7H21 M19 12H21 M19 17H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Main Body -->
+  <rect x="5" y="5" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+
+  <!-- Inner Die Frame -->
+  <rect x="7.5" y="7.5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1" stroke-opacity="0.5"/>
+
+  <!-- Text with Courier Bold -->
+  <text x="12" y="11" font-family="Courier, 'Courier New', monospace" font-weight="bold" font-size="3" fill="currentColor" text-anchor="middle">CHIP</text>
+  <text x="12" y="14.5" font-family="Courier, 'Courier New', monospace" font-weight="bold" font-size="3" fill="currentColor" text-anchor="middle">OS</text>
+</svg>

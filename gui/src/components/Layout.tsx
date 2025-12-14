@@ -96,7 +96,7 @@ const Layout = () => {
   );
 
   useWebviewListener(
-    "focusContinueInputWithNewSession",
+    "focusChipInputWithNewSession",
     async () => {
       navigate(ROUTES.HOME);
       if (isInEdit) {

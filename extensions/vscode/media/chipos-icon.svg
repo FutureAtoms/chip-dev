@@ -1,0 +1,39 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" rx="16" fill="#1e1e1e"/>
+
+  <g transform="translate(64, 64)">
+    <!-- Chip scaled around center -->
+    <g transform="scale(3.5)">
+      <!-- Top Pins (thicker rectangles) -->
+      <rect x="-6" y="-11" width="2.5" height="4" rx="0.75" fill="#cccccc"/>
+      <rect x="-1.25" y="-11" width="2.5" height="4" rx="0.75" fill="#cccccc"/>
+      <rect x="3.5" y="-11" width="2.5" height="4" rx="0.75" fill="#cccccc"/>
+
+      <!-- Bottom Pins -->
+      <rect x="-6" y="7" width="2.5" height="4" rx="0.75" fill="#cccccc"/>
+      <rect x="-1.25" y="7" width="2.5" height="4" rx="0.75" fill="#cccccc"/>
+      <rect x="3.5" y="7" width="2.5" height="4" rx="0.75" fill="#cccccc"/>
+
+      <!-- Left Pins -->
+      <rect x="-11" y="-6" width="4" height="2.5" rx="0.75" fill="#cccccc"/>
+      <rect x="-11" y="-1.25" width="4" height="2.5" rx="0.75" fill="#cccccc"/>
+      <rect x="-11" y="3.5" width="4" height="2.5" rx="0.75" fill="#cccccc"/>
+
+      <!-- Right Pins -->
+      <rect x="7" y="-6" width="4" height="2.5" rx="0.75" fill="#cccccc"/>
+      <rect x="7" y="-1.25" width="4" height="2.5" rx="0.75" fill="#cccccc"/>
+      <rect x="7" y="3.5" width="4" height="2.5" rx="0.75" fill="#cccccc"/>
+
+      <!-- Main Body - filled border -->
+      <rect x="-7" y="-7" width="14" height="14" rx="2" stroke="#cccccc" stroke-width="2" fill="none"/>
+
+      <!-- Inner Die Frame -->
+      <rect x="-4.5" y="-4.5" width="9" height="9" rx="1" stroke="#cccccc" stroke-width="1" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Text with bold font - positioned absolutely -->
+  <text x="64" y="59" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="13" fill="#cccccc" text-anchor="middle">CHIP</text>
+  <text x="64" y="75" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="13" fill="#cccccc" text-anchor="middle">OS</text>
+</svg>

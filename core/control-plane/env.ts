@@ -7,10 +7,24 @@ import {
 import { AuthType, ControlPlaneEnv } from "./AuthTypes";
 import { getLicenseKeyData } from "./mdm/mdm";
 
-export const EXTENSION_NAME = "continue";
+export const EXTENSION_NAME = "chip";
 
 const WORKOS_CLIENT_ID_PRODUCTION = "client_01J0FW6XN8N2XJAECF7NE0Y65J";
 const WORKOS_CLIENT_ID_STAGING = "client_01J0FW6XCPMJMQ3CG51RB4HBZQ";
+
+// ChipOS WorkOS Client ID - replace with your own from https://dashboard.workos.com
+const WORKOS_CLIENT_ID_CHIPOS = process.env.CHIPOS_WORKOS_CLIENT_ID || "client_YOUR_CHIPOS_WORKOS_CLIENT_ID";
+
+// ChipOS Backend URL
+const CHIPOS_API_URL = process.env.CHIPOS_API_URL || "https://api.futureatoms.com";
+
+const CHIPOS_HUB_ENV: ControlPlaneEnv = {
+  DEFAULT_CONTROL_PLANE_PROXY_URL: `${CHIPOS_API_URL}/`,
+  CONTROL_PLANE_URL: `${CHIPOS_API_URL}/`,
+  AUTH_TYPE: AuthType.ChipOS,
+  WORKOS_CLIENT_ID: WORKOS_CLIENT_ID_CHIPOS,
+  APP_URL: "https://chipos.futureatoms.com/",
+};
 
 const PRODUCTION_HUB_ENV: ControlPlaneEnv = {
   DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api.continue.dev/",
@@ -86,7 +100,9 @@ export function getControlPlaneEnvSync(
         ? "staging"
         : ideTestEnvironment === "local"
           ? "local"
-          : process.env.CONTROL_PLANE_ENV;
+          : ideTestEnvironment === "chipos"
+            ? "chipos"
+            : process.env.CONTROL_PLANE_ENV || "chipos"; // Default to ChipOS
 
   return env === "local"
     ? LOCAL_ENV
@@ -94,7 +110,11 @@ export function getControlPlaneEnvSync(
       ? STAGING_ENV
       : env === "test"
         ? TEST_ENV
-        : PRODUCTION_HUB_ENV;
+        : env === "chipos"
+          ? CHIPOS_HUB_ENV
+          : env === "hub"
+            ? PRODUCTION_HUB_ENV
+            : CHIPOS_HUB_ENV; // Default to ChipOS
 }
 
 export async function useHub(

@@ -1,8 +1,20 @@
 const fs = require("fs");
+const path = require("path");
 
 const { writeBuildTimestamp } = require("./utils");
 
 const esbuild = require("esbuild");
+
+// Copy jsdom worker files that are marked as external
+function copyJsdomWorkerFiles() {
+  const workerSrc = path.join(__dirname, "../node_modules/jsdom/lib/jsdom/living/xhr/xhr-sync-worker.js");
+  const workerDst = path.join(__dirname, "../out/xhr-sync-worker.js");
+
+  if (fs.existsSync(workerSrc)) {
+    fs.copyFileSync(workerSrc, workerDst);
+    console.log("Copied xhr-sync-worker.js to out/");
+  }
+}
 
 const flags = process.argv.slice(2);
 
@@ -42,6 +54,8 @@ const esbuildConfig = {
             } catch (e) {
               console.error("Failed to write esbuild meta file", e);
             }
+            // Copy external worker files
+            copyJsdomWorkerFiles();
             console.log("VS Code Extension esbuild complete"); // used verbatim in vscode tasks to detect completion
           }
         });

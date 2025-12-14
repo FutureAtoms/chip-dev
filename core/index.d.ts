@@ -487,7 +487,7 @@ export interface PromptLog {
   completion: string;
 }
 
-export type MessageModes = "chat" | "agent" | "plan" | "background";
+export type MessageModes = "chat" | "agent" | "plan" | "background" | "axe";
 
 export type ToolStatus =
   | "generating" // Tool call arguments are being streamed from the LLM
@@ -795,7 +795,7 @@ export interface IdeSettings {
   remoteConfigServerUrl: string | undefined;
   remoteConfigSyncPeriod: number;
   userToken: string;
-  continueTestEnvironment: "none" | "production" | "staging" | "local";
+  continueTestEnvironment: "none" | "production" | "staging" | "local" | "chipos";
   pauseCodebaseIndexOnStart: boolean;
 }
 

@@ -29,9 +29,12 @@ import { PromiseAdapter, promiseFromEvent } from "./promiseUtils";
 import { SecretStorage } from "./SecretStorage";
 import { UriEventHandler } from "./uriHandler";
 
-const AUTH_NAME = "Continue";
+const AUTH_NAME = "Chip";
 
-const controlPlaneEnv = getControlPlaneEnvSync(true ? "production" : "none");
+const controlPlaneEnv = getControlPlaneEnvSync("chipos");
+
+// Check if we're using ChipOS unified auth (provided by chipos-welcome extension)
+const useChipOSUnifiedAuth = controlPlaneEnv.AUTH_TYPE === AuthType.ChipOS;
 
 const SESSIONS_SECRET_KEY = `${controlPlaneEnv.AUTH_TYPE}.sessions`;
 
@@ -72,7 +75,7 @@ interface ContinueAuthenticationSession extends AuthenticationSession {
 export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
   private _sessionChangeEmitter =
     new EventEmitter<AuthenticationProviderAuthenticationSessionsChangeEvent>();
-  private _disposable: Disposable;
+  private _disposable: Disposable | undefined;
   private _pendingStates: string[] = [];
   private _codeExchangePromises = new Map<
     string,
@@ -90,6 +93,22 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
     private readonly context: ExtensionContext,
     private readonly _uriHandler: UriEventHandler,
   ) {
+    this.secretStorage = new SecretStorage(context);
+
+    // When using ChipOS unified auth, skip registering our own provider
+    // The chipos-welcome extension provides the 'chipos' auth provider
+    if (useChipOSUnifiedAuth) {
+      console.log("[Chip] Using ChipOS unified authentication provider");
+      // Still set up the emitter for compatibility
+      this.attemptEmitter = new NodeEventEmitter();
+      WorkOsAuthProvider.hasAttemptedRefresh = Promise.resolve();
+      this.attemptEmitter.emit("attempted");
+      // Just register the URI handler for OAuth callbacks
+      this._disposable = window.registerUriHandler(this._uriHandler);
+      return;
+    }
+
+    // Traditional WorkOS auth flow for non-ChipOS environments
     this._disposable = Disposable.from(
       authentication.registerAuthenticationProvider(
         controlPlaneEnv.AUTH_TYPE,
@@ -99,8 +118,6 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
       ),
       window.registerUriHandler(this._uriHandler),
     );
-
-    this.secretStorage = new SecretStorage(context);
 
     // Immediately refresh any existing sessions
     this.attemptEmitter = new NodeEventEmitter();
@@ -384,7 +401,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
 
       const token = await this.login(codeChallenge, controlPlaneEnv, scopes);
       if (!token) {
-        throw new Error(`Continue login failure`);
+        throw new Error(`ChipOS login failure`);
       }
 
       const userInfo = (await this.getUserInfo(
@@ -458,7 +475,9 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
       clearInterval(this._refreshInterval);
       this._refreshInterval = null;
     }
-    this._disposable.dispose();
+    if (this._disposable) {
+      this._disposable.dispose();
+    }
   }
 
   /**
@@ -472,7 +491,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
     return await window.withProgress<string>(
       {
         location: ProgressLocation.Notification,
-        title: "Signing in to Continue...",
+        title: "Signing in to ChipOS...",
         cancellable: true,
       },
       async (_, token) => {
@@ -614,6 +633,40 @@ export async function getControlPlaneSessionInfo(
   }
 
   try {
+    // For ChipOS unified auth, use the 'chipos' provider from chipos-welcome extension
+    if (useChipOSUnifiedAuth) {
+      try {
+        const session = await authentication.getSession(
+          "chipos", // Use the ChipOS unified auth provider
+          [],
+          silent ? { silent: true } : { createIfNone: true },
+        );
+        if (!session) {
+          return undefined;
+        }
+        return {
+          AUTH_TYPE: AuthType.ChipOS,
+          accessToken: session.accessToken,
+          account: {
+            id: session.account.id,
+            label: session.account.label,
+          },
+        };
+      } catch (e: any) {
+        // If chipos provider not available, fall through to WorkOS
+        console.warn("[Chip] ChipOS auth provider not available:", e.message);
+        if (silent) {
+          return undefined;
+        }
+        // Show a message to the user
+        window.showWarningMessage(
+          "ChipOS authentication not available. Please ensure ChipOS Welcome extension is installed and activated.",
+        );
+        return undefined;
+      }
+    }
+
+    // Traditional WorkOS auth flow
     if (useOnboarding) {
       WorkOsAuthProvider.useOnboardingUri = true;
     }

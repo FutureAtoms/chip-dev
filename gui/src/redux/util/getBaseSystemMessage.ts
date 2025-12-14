@@ -1,6 +1,7 @@
 import { ModelDescription, Tool } from "core";
 import {
   DEFAULT_AGENT_SYSTEM_MESSAGE,
+  DEFAULT_AXE_SYSTEM_MESSAGE,
   DEFAULT_CHAT_SYSTEM_MESSAGE,
   DEFAULT_PLAN_SYSTEM_MESSAGE,
 } from "core/llm/defaultSystemMessages";
@@ -19,6 +20,8 @@ export function getBaseSystemMessage(
     baseMessage = model.baseAgentSystemMessage ?? DEFAULT_AGENT_SYSTEM_MESSAGE;
   } else if (messageMode === "plan") {
     baseMessage = model.basePlanSystemMessage ?? DEFAULT_PLAN_SYSTEM_MESSAGE;
+  } else if (messageMode === "axe") {
+    baseMessage = DEFAULT_AXE_SYSTEM_MESSAGE;
   } else {
     baseMessage = model.baseChatSystemMessage ?? DEFAULT_CHAT_SYSTEM_MESSAGE;
   }

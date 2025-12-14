@@ -1,0 +1,39 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" rx="16" fill="#1e1e1e"/>
+
+  <g transform="translate(64, 64)">
+    <!-- Chip scaled around center -->
+    <g transform="scale(4)">
+      <!-- Top Pins (as rectangles) -->
+      <rect x="-5.75" y="-10.5" width="1.5" height="3" rx="0.5" fill="#cccccc"/>
+      <rect x="-0.75" y="-10.5" width="1.5" height="3" rx="0.5" fill="#cccccc"/>
+      <rect x="4.25" y="-10.5" width="1.5" height="3" rx="0.5" fill="#cccccc"/>
+
+      <!-- Bottom Pins -->
+      <rect x="-5.75" y="7.5" width="1.5" height="3" rx="0.5" fill="#cccccc"/>
+      <rect x="-0.75" y="7.5" width="1.5" height="3" rx="0.5" fill="#cccccc"/>
+      <rect x="4.25" y="7.5" width="1.5" height="3" rx="0.5" fill="#cccccc"/>
+
+      <!-- Left Pins -->
+      <rect x="-10.5" y="-5.75" width="3" height="1.5" rx="0.5" fill="#cccccc"/>
+      <rect x="-10.5" y="-0.75" width="3" height="1.5" rx="0.5" fill="#cccccc"/>
+      <rect x="-10.5" y="4.25" width="3" height="1.5" rx="0.5" fill="#cccccc"/>
+
+      <!-- Right Pins -->
+      <rect x="7.5" y="-5.75" width="3" height="1.5" rx="0.5" fill="#cccccc"/>
+      <rect x="7.5" y="-0.75" width="3" height="1.5" rx="0.5" fill="#cccccc"/>
+      <rect x="7.5" y="4.25" width="3" height="1.5" rx="0.5" fill="#cccccc"/>
+
+      <!-- Main Body -->
+      <rect x="-7" y="-7" width="14" height="14" rx="2" stroke="#cccccc" stroke-width="1.5" fill="none"/>
+
+      <!-- Inner Die Frame -->
+      <rect x="-4.5" y="-4.5" width="9" height="9" rx="1" stroke="#cccccc" stroke-width="0.75" stroke-opacity="0.6" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Text with Courier Bold - positioned absolutely -->
+  <text x="64" y="58" font-family="Courier, 'Courier New', monospace" font-weight="bold" font-size="14" fill="#cccccc" text-anchor="middle">CHIP</text>
+  <text x="64" y="76" font-family="Courier, 'Courier New', monospace" font-weight="bold" font-size="14" fill="#cccccc" text-anchor="middle">OS</text>
+</svg>

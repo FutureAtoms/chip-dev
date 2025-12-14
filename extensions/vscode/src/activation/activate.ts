@@ -56,6 +56,13 @@ export async function activateExtension(context: vscode.ExtensionContext) {
     );
   }
 
+  // Ensure Chip view opens in auxiliary bar (secondary sidebar) on startup
+  // This helps ensure the view appears in the correct location
+  setTimeout(() => {
+    vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
+    vscode.commands.executeCommand("chip.chipGUIView.focus");
+  }, 500);
+
   // Register config.yaml schema by removing old entries and adding new one (uri.fsPath changes with each version)
   const yamlMatcher = ".continue/**/*.yaml";
   const yamlConfig = vscode.workspace.getConfiguration("yaml");

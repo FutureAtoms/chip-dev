@@ -45,6 +45,8 @@ export function ModeSelect() {
     } else if (mode === "plan") {
       dispatch(setMode("agent"));
     } else if (mode === "agent") {
+      dispatch(setMode("axe"));
+    } else if (mode === "axe") {
       // Skip background mode if local agent is selected
       dispatch(setMode(isLocalAgent ? "chat" : "background"));
     } else {
@@ -117,7 +119,9 @@ export function ModeSelect() {
                 ? "Agent"
                 : mode === "background"
                   ? "Background"
-                  : "Plan"}
+                  : mode === "axe"
+                    ? "Axe"
+                    : "Plan"}
           </span>
           <ChevronDownIcon
             className="h-2 w-2 flex-shrink-0"
@@ -183,6 +187,25 @@ export function ModeSelect() {
             {!isGoodAtAgentMode && notGreatAtAgent("Agent")}
             <CheckIcon
               className={`ml-auto h-3 w-3 ${mode === "agent" ? "" : "opacity-0"}`}
+            />
+          </ListboxOption>
+
+          <ListboxOption value="axe" className={"gap-1"}>
+            <div className="flex flex-row items-center gap-1.5">
+              <ModeIcon mode="axe" />
+              <span className="">Axe</span>
+              <ToolTip
+                style={{
+                  zIndex: 200001,
+                }}
+                content="One-shot pipeline builder for Voyager SDK"
+              >
+                <InformationCircleIcon className="h-2.5 w-2.5 flex-shrink-0" />
+              </ToolTip>
+            </div>
+            {!isGoodAtAgentMode && notGreatAtAgent("Axe")}
+            <CheckIcon
+              className={`ml-auto h-3 w-3 ${mode === "axe" ? "" : "opacity-0"}`}
             />
           </ListboxOption>
 

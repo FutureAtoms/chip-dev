@@ -1,5 +1,5 @@
 export interface HubSessionInfo {
-  AUTH_TYPE: AuthType.WorkOsProd | AuthType.WorkOsStaging;
+  AUTH_TYPE: AuthType.WorkOsProd | AuthType.WorkOsStaging | AuthType.ChipOS;
   accessToken: string;
   account: {
     label: string;
@@ -22,13 +22,14 @@ export function isOnPremSession(
 export enum AuthType {
   WorkOsProd = "continue",
   WorkOsStaging = "continue-staging",
+  ChipOS = "chipos",
   OnPrem = "on-prem",
 }
 
 export interface HubEnv {
   DEFAULT_CONTROL_PLANE_PROXY_URL: string;
   CONTROL_PLANE_URL: string;
-  AUTH_TYPE: AuthType.WorkOsProd | AuthType.WorkOsStaging;
+  AUTH_TYPE: AuthType.WorkOsProd | AuthType.WorkOsStaging | AuthType.ChipOS;
   WORKOS_CLIENT_ID: string;
   APP_URL: string;
 }

@@ -65,7 +65,9 @@ import Vllm from "./Vllm";
 import Voyage from "./Voyage";
 import WatsonX from "./WatsonX";
 import xAI from "./xAI";
+import ChipOS from "./ChipOS";
 export const LLMClasses = [
+  ChipOS,
   Anthropic,
   Cohere,
   CometAPI,

@@ -1,4 +1,5 @@
 import {
+  BoltIcon,
   ChatBubbleLeftIcon,
   RocketLaunchIcon,
   SparklesIcon,
@@ -24,5 +25,7 @@ export function ModeIcon({
       return <ChatBubbleLeftIcon className={className} />;
     case "background":
       return <RocketLaunchIcon className={className} />;
+    case "axe":
+      return <BoltIcon className={className} />;
   }
 }
