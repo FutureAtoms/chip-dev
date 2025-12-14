@@ -32,6 +32,7 @@ import NCompass from "./NCompass.js";
 import LlamaStack from "./LlamaStack.js";
 import Nebius from "./Nebius.js";
 import OVHcloud from "./OVHcloud.js";
+import ChipOS from "./ChipOS.js";
 
 // Base OpenAI tests
 import { afterEach, describe, expect, test, vi } from "vitest";
@@ -450,4 +451,10 @@ createOpenAISubclassTests(Nebius, {
 createOpenAISubclassTests(OVHcloud, {
   providerName: "ovhcloud",
   defaultApiBase: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/",
+});
+
+// ChipOS - Self-hosted OpenAI-compatible API with provider routing
+createOpenAISubclassTests(ChipOS, {
+  providerName: "chipos",
+  defaultApiBase: "http://localhost:8181/v1/",
 });
