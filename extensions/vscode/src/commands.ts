@@ -888,9 +888,16 @@ const getCommandsMap: (
       // Reset the Chip view to its default location (auxiliary bar / secondary sidebar)
       // This is useful if the view was accidentally moved to the wrong location
       try {
+        // First toggle the auxiliary bar to ensure it's visible
+        await vscode.commands.executeCommand("workbench.action.toggleAuxiliaryBar");
+        await new Promise(resolve => setTimeout(resolve, 100));
         // Focus and reveal the auxiliary bar where Chip should live
         await vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
         await vscode.commands.executeCommand("chip.chipGUIView.focus");
+
+        // Reset the positioning flag so the next startup will also try to position correctly
+        await extensionContext.globalState.update("chip.hasPositionedInAuxiliaryBar", true);
+
         void vscode.window.showInformationMessage(
           "Chip view has been moved to the secondary sidebar (right side). If it's still in the wrong location, try dragging the 'CHIP' panel header to the right sidebar.",
         );

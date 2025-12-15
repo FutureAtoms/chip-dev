@@ -57,11 +57,50 @@ export async function activateExtension(context: vscode.ExtensionContext) {
   }
 
   // Ensure Chip view opens in auxiliary bar (secondary sidebar) on startup
-  // This helps ensure the view appears in the correct location
-  setTimeout(() => {
-    vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
-    vscode.commands.executeCommand("chip.chipGUIView.focus");
-  }, 500);
+  // This uses global state to track if we've already positioned the view,
+  // so we only force placement on first activation (respects user preference after)
+  const hasPositionedChipView = context.globalState.get<boolean>("chip.hasPositionedInAuxiliaryBar");
+
+  if (!hasPositionedChipView) {
+    // First-time setup: ensure Chip opens in secondary sidebar
+    // Use multiple attempts with increasing delays to handle VS Code's async layout
+    const positionChipView = async (attempt: number = 1) => {
+      try {
+        // First, make the auxiliary bar visible
+        await vscode.commands.executeCommand("workbench.action.toggleAuxiliaryBar");
+        // Small delay to let VS Code process
+        await new Promise(resolve => setTimeout(resolve, 100));
+        // Focus the auxiliary bar
+        await vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
+        // Focus the Chip view specifically
+        await vscode.commands.executeCommand("chip.chipGUIView.focus");
+
+        // Mark as positioned so we don't override user preference in future
+        await context.globalState.update("chip.hasPositionedInAuxiliaryBar", true);
+
+        console.log("[Chip] Successfully positioned view in secondary sidebar");
+      } catch (e) {
+        // If first attempts fail, retry with longer delays
+        if (attempt < 3) {
+          setTimeout(() => positionChipView(attempt + 1), 500 * attempt);
+        } else {
+          console.warn("[Chip] Could not auto-position view in secondary sidebar:", e);
+        }
+      }
+    };
+
+    // Start positioning after VS Code has fully initialized (1 second delay)
+    setTimeout(() => positionChipView(), 1000);
+  } else {
+    // User has already had Chip positioned once - just focus it if auxiliary bar is visible
+    setTimeout(async () => {
+      try {
+        await vscode.commands.executeCommand("chip.chipGUIView.focus");
+      } catch {
+        // View may not be visible, that's fine
+      }
+    }, 500);
+  }
 
   // Register config.yaml schema by removing old entries and adding new one (uri.fsPath changes with each version)
   const yamlMatcher = ".continue/**/*.yaml";

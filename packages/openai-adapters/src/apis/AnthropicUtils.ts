@@ -11,26 +11,32 @@ import {
 } from "openai/resources";
 
 export function getAnthropicErrorMessage(response: ErrorResponse): string {
+  // Always prefer the actual error message from Anthropic when available,
+  // as it contains specific details (e.g., "credit balance too low")
+  const actualMessage = response.error.message;
+
   switch (response.error.type) {
     case "api_error":
-      return "An unexpected error has occurred internal to Anthropic's systems.";
+      return actualMessage || "An unexpected error has occurred internal to Anthropic's systems.";
     case "invalid_request_error":
-      return "There was an issue with the format or content of your request.";
+      // Don't use generic message - the actual message contains important details
+      // like "Your credit balance is too low to access the Anthropic API"
+      return actualMessage || "There was an issue with the format or content of your request.";
     case "authentication_error":
-      return "There's an issue with your API key.";
+      return actualMessage || "There's an issue with your API key.";
     case "permission_error":
-      return "Your API key does not have permission to use the specified resource.";
+      return actualMessage || "Your API key does not have permission to use the specified resource.";
     case "not_found_error":
-      return "The requested resource was not found.";
+      return actualMessage || "The requested resource was not found.";
     case "rate_limit_error":
-      return "Your account has hit a rate limit.";
+      return actualMessage || "Your account has hit a rate limit.";
     case "overloaded_error":
-      return "Anthropic's API is temporarily overloaded. Please check their status page: https://status.anthropic.com/#past-incidents";
+      return actualMessage || "Anthropic's API is temporarily overloaded. Please check their status page: https://status.anthropic.com/#past-incidents";
     case "timeout_error":
-      return "Anthropic API timed out. Please check their status page: https://status.anthropic.com/#past-incidents";
+      return actualMessage || "Anthropic API timed out. Please check their status page: https://status.anthropic.com/#past-incidents";
     case "billing_error":
     default:
-      return response.error.message;
+      return actualMessage;
   }
 }
 

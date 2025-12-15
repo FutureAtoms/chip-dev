@@ -66,6 +66,31 @@ const jsonSchemaTypeToGeminiType = (
 };
 
 function convertJsonSchemaToGeminiSchema(jsonSchema: any): GeminiObjectSchema {
+  // Handle anyOf pattern for nullable types (e.g., from Python Optional[str])
+  // Pattern: {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null}
+  if (Array.isArray(jsonSchema.anyOf) && !jsonSchema.type) {
+    const nonNullTypes = jsonSchema.anyOf.filter(
+      (s: any) => s.type !== "null" && s.type !== null
+    );
+    const hasNullType = jsonSchema.anyOf.some(
+      (s: any) => s.type === "null" || s.type === null
+    );
+
+    if (nonNullTypes.length === 1 && hasNullType) {
+      // This is a nullable type pattern - extract the actual type and mark as nullable
+      const actualSchema = nonNullTypes[0];
+      const result = convertJsonSchemaToGeminiSchema({
+        ...actualSchema,
+        title: jsonSchema.title || actualSchema.title,
+        description: jsonSchema.description || actualSchema.description,
+        default: jsonSchema.default,
+      });
+      result.nullable = true;
+      return result;
+    }
+    // Complex anyOf with multiple non-null types - handle later in the flow
+  }
+
   const jsonSchemaType = jsonSchema["type"];
   if (!jsonSchemaType || typeof jsonSchema.type !== "string") {
     throw new Error(
