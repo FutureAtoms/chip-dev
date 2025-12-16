@@ -13,10 +13,12 @@ const WORKOS_CLIENT_ID_PRODUCTION = "client_01J0FW6XN8N2XJAECF7NE0Y65J";
 const WORKOS_CLIENT_ID_STAGING = "client_01J0FW6XCPMJMQ3CG51RB4HBZQ";
 
 // ChipOS WorkOS Client ID - replace with your own from https://dashboard.workos.com
-const WORKOS_CLIENT_ID_CHIPOS = process.env.CHIPOS_WORKOS_CLIENT_ID || "client_YOUR_CHIPOS_WORKOS_CLIENT_ID";
+const WORKOS_CLIENT_ID_CHIPOS =
+  process.env.CHIPOS_WORKOS_CLIENT_ID || "client_YOUR_CHIPOS_WORKOS_CLIENT_ID";
 
 // ChipOS Backend URL
-const CHIPOS_API_URL = process.env.CHIPOS_API_URL || "https://api.futureatoms.com";
+const CHIPOS_API_URL =
+  process.env.CHIPOS_API_URL || "https://api.futureatoms.com";
 
 const CHIPOS_HUB_ENV: ControlPlaneEnv = {
   DEFAULT_CONTROL_PLANE_PROXY_URL: `${CHIPOS_API_URL}/`,
@@ -80,7 +82,7 @@ export function getControlPlaneEnvSync(
       AUTH_TYPE: AuthType.OnPrem,
       DEFAULT_CONTROL_PLANE_PROXY_URL: apiUrl,
       CONTROL_PLANE_URL: apiUrl,
-      APP_URL: "https://hub.continue.dev/",
+      APP_URL: "https://chipos.futureatoms.com/",
     };
   }
 

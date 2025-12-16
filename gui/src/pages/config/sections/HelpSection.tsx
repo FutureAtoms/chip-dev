@@ -181,10 +181,10 @@ export function HelpSection() {
             <div className="flex flex-col">
               <ConfigRow
                 title="Chip Hub"
-                description="Visit hub.continue.dev to explore custom agents and blocks"
+                description="Visit hub.futureatoms.com to explore custom agents and blocks"
                 icon={LinkIcon}
                 onClick={() =>
-                  ideMessenger.post("openUrl", "https://hub.continue.dev/")
+                  ideMessenger.post("openUrl", "https://hub.futureatoms.com/")
                 }
               />
 
@@ -193,7 +193,7 @@ export function HelpSection() {
                 description="Learn how to configure and use Chip"
                 icon={LinkIcon}
                 onClick={() =>
-                  ideMessenger.post("openUrl", "https://docs.continue.dev/")
+                  ideMessenger.post("openUrl", "https://docs.futureatoms.com/")
                 }
               />
 
@@ -204,7 +204,7 @@ export function HelpSection() {
                 onClick={() =>
                   ideMessenger.post(
                     "openUrl",
-                    "https://github.com/continuedev/continue/issues/new/choose",
+                    "https://github.com/futureatoms/chipos/issues/new/choose",
                   )
                 }
               />
@@ -214,7 +214,7 @@ export function HelpSection() {
                 description="Join us on Discord to stay up-to-date on the latest developments"
                 icon={LinkIcon}
                 onClick={() =>
-                  ideMessenger.post("openUrl", "https://discord.gg/vapESyrFmJ")
+                  ideMessenger.post("openUrl", "https://discord.gg/futureatoms")
                 }
               />
             </div>

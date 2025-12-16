@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Continue",
+  "name": "Chip",
   "banner": {
-    "content": "Check out our new look in Mission Control. It's now easier than ever to create [Workflows](https://hub.continue.dev/workflows), [Integrate with the tools you use](https://hub.continue.dev/integrations), and to create a one-off Task.",
+    "content": "Check out our new look in Mission Control. It's now easier than ever to create [Workflows](https://hub.futureatoms.com/workflows), [Integrate with the tools you use](https://hub.futureatoms.com/integrations), and to create a one-off Task.",
     "dismissable": true
   },
   "colors": {
@@ -328,22 +328,22 @@
       "anchors": [
         {
           "anchor": "About Us",
-          "href": "https://continue.dev/about-us",
+          "href": "https://futureatoms.com/about-us",
           "icon": "book-open"
         },
         {
           "anchor": "Community",
-          "href": "https://discord.gg/NWtdYexhMs",
+          "href": "https://discord.gg/futureatoms",
           "icon": "discord"
         },
         {
           "anchor": "Blog",
-          "href": "https://continue.dev/blog",
+          "href": "https://futureatoms.com/blog",
           "icon": "newspaper"
         },
         {
           "anchor": "Release Notes",
-          "href": "https://changelog.continue.dev/",
+          "href": "https://changelog.futureatoms.com/",
           "icon": "bullhorn"
         }
       ]
@@ -352,7 +352,7 @@
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg",
-    "href": "https://continue.dev"
+    "href": "https://futureatoms.com"
   },
   "background": {
     "color": {
@@ -363,21 +363,21 @@
     "links": [
       {
         "label": "🚀 Get Started",
-        "href": "https://hub.continue.dev/"
+        "href": "https://hub.futureatoms.com/"
       }
     ],
     "primary": {
       "type": "github",
-      "href": "https://github.com/continuedev/continue"
+      "href": "https://github.com/futureatoms/chipos"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://twitter.com/continuedev",
-      "github": "https://github.com/continuedev/continue",
-      "linkedin": "https://linkedin.com/company/continuedev",
-      "discord": "https://discord.gg/vapESyrFmJ",
-      "youtube": "https://www.youtube.com/@continuedev"
+      "x": "https://twitter.com/futureatoms",
+      "github": "https://github.com/futureatoms/chipos",
+      "linkedin": "https://linkedin.com/company/futureatoms",
+      "discord": "https://discord.gg/futureatoms",
+      "youtube": "https://www.youtube.com/@futureatoms"
     }
   },
   "contextual": {
