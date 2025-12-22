@@ -888,20 +888,30 @@ const getCommandsMap: (
       // Reset the Chip view to its default location (auxiliary bar / secondary sidebar)
       // This is useful if the view was accidentally moved to the wrong location
       try {
-        // First toggle the auxiliary bar to ensure it's visible
-        await vscode.commands.executeCommand("workbench.action.toggleAuxiliaryBar");
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Check if auxiliary bar is currently visible
+        const auxiliaryBarConfig = vscode.workspace.getConfiguration("workbench");
+        const isAuxiliaryBarVisible = auxiliaryBarConfig.get<boolean>("auxiliaryBar.visible");
+
+        console.log(`[Chip] Reset view location - auxiliary bar visible: ${isAuxiliaryBarVisible}`);
+
+        // If auxiliary bar is NOT visible, show it (toggle will show it)
+        // If it IS visible, don't toggle (that would hide it!)
+        if (!isAuxiliaryBarVisible) {
+          console.log("[Chip] Showing auxiliary bar...");
+          await vscode.commands.executeCommand("workbench.action.toggleAuxiliaryBar");
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
+
         // Focus and reveal the auxiliary bar where Chip should live
         await vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
+        await new Promise(resolve => setTimeout(resolve, 100));
         await vscode.commands.executeCommand("chip.chipGUIView.focus");
-
-        // Reset the positioning flag so the next startup will also try to position correctly
-        await extensionContext.globalState.update("chip.hasPositionedInAuxiliaryBar", true);
 
         void vscode.window.showInformationMessage(
           "Chip view has been moved to the secondary sidebar (right side). If it's still in the wrong location, try dragging the 'CHIP' panel header to the right sidebar.",
         );
       } catch (e) {
+        console.error("[Chip] Failed to reset view location:", e);
         void vscode.window.showErrorMessage(
           "Failed to reset Chip view location. Try manually dragging the CHIP panel to the right sidebar.",
         );

@@ -57,50 +57,54 @@ export async function activateExtension(context: vscode.ExtensionContext) {
   }
 
   // Ensure Chip view opens in auxiliary bar (secondary sidebar) on startup
-  // This uses global state to track if we've already positioned the view,
-  // so we only force placement on first activation (respects user preference after)
-  const hasPositionedChipView = context.globalState.get<boolean>("chip.hasPositionedInAuxiliaryBar");
+  // Always attempt to position correctly - this ensures Chip stays in the right place
+  // even if the user's workspace state gets corrupted
+  const positionChipView = async (attempt: number = 1) => {
+    try {
+      // Check if auxiliary bar is currently visible
+      const auxiliaryBarConfig = vscode.workspace.getConfiguration("workbench");
+      const isAuxiliaryBarVisible = auxiliaryBarConfig.get<boolean>("auxiliaryBar.visible");
 
-  if (!hasPositionedChipView) {
-    // First-time setup: ensure Chip opens in secondary sidebar
-    // Use multiple attempts with increasing delays to handle VS Code's async layout
-    const positionChipView = async (attempt: number = 1) => {
-      try {
-        // First, make the auxiliary bar visible
+      console.log(`[Chip] Positioning view (attempt ${attempt}), auxiliary bar visible: ${isAuxiliaryBarVisible}`);
+
+      // If auxiliary bar is NOT visible, show it (toggle will show it)
+      // If it IS visible, don't toggle (that would hide it!)
+      if (!isAuxiliaryBarVisible) {
+        console.log("[Chip] Showing auxiliary bar...");
         await vscode.commands.executeCommand("workbench.action.toggleAuxiliaryBar");
-        // Small delay to let VS Code process
-        await new Promise(resolve => setTimeout(resolve, 100));
-        // Focus the auxiliary bar
-        await vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
-        // Focus the Chip view specifically
-        await vscode.commands.executeCommand("chip.chipGUIView.focus");
-
-        // Mark as positioned so we don't override user preference in future
-        await context.globalState.update("chip.hasPositionedInAuxiliaryBar", true);
-
-        console.log("[Chip] Successfully positioned view in secondary sidebar");
-      } catch (e) {
-        // If first attempts fail, retry with longer delays
-        if (attempt < 3) {
-          setTimeout(() => positionChipView(attempt + 1), 500 * attempt);
-        } else {
-          console.warn("[Chip] Could not auto-position view in secondary sidebar:", e);
-        }
+        // Wait for the bar to appear
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
-    };
 
-    // Start positioning after VS Code has fully initialized (1 second delay)
-    setTimeout(() => positionChipView(), 1000);
-  } else {
-    // User has already had Chip positioned once - just focus it if auxiliary bar is visible
-    setTimeout(async () => {
-      try {
-        await vscode.commands.executeCommand("chip.chipGUIView.focus");
-      } catch {
-        // View may not be visible, that's fine
+      // Now focus the auxiliary bar to ensure it's active
+      await vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Focus the Chip view specifically
+      await vscode.commands.executeCommand("chip.chipGUIView.focus");
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      console.log("[Chip] Successfully positioned view in auxiliary bar");
+    } catch (e) {
+      console.warn(`[Chip] Error positioning view (attempt ${attempt}):`, e);
+
+      // Retry with exponential backoff for first few attempts
+      if (attempt < 3) {
+        const delay = 500 * attempt;
+        console.log(`[Chip] Retrying in ${delay}ms...`);
+        setTimeout(() => positionChipView(attempt + 1), delay);
+      } else {
+        console.error("[Chip] Failed to position view in auxiliary bar after 3 attempts");
+        void vscode.window.showInformationMessage(
+          "Chip: Unable to auto-position in secondary sidebar. You can manually move it by right-clicking the Chip panel header and selecting 'Move View...' → 'Secondary Side Bar'",
+        );
       }
-    }, 500);
-  }
+    }
+  };
+
+  // Start positioning after VS Code has fully initialized
+  // Use 1.5 second delay to ensure all views are registered
+  setTimeout(() => positionChipView(), 1500);
 
   // Register config.yaml schema by removing old entries and adding new one (uri.fsPath changes with each version)
   const yamlMatcher = ".continue/**/*.yaml";
